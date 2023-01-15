@@ -27,9 +27,7 @@ router.get('/post/:id', async (req, res) => {
 
         if (singlePost) {
             const post = singlePost({ plain: true });
-            res.render('single-post', {
-                post,
-            });
+            res.render('single-post', { post });
 
         } else {
             res.status(500).json(err);
@@ -42,7 +40,7 @@ router.get('/post/:id', async (req, res) => {
 //Signup page
 router.get('/signup', (req, res) => {
     if (req.session.logged_in) {
-        res.redirect('/');
+        res.redirect('/dashboard');
         return;
     }
 
@@ -52,7 +50,7 @@ router.get('/signup', (req, res) => {
 //Login Page
 router.get('/login', (req, res) => {
     if (req.session.logged_in) {
-        res.redirect('/');
+        res.redirect('/dashboard');
         return;
     }
 

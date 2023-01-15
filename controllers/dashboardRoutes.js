@@ -1,5 +1,6 @@
 const router = require('express').Router();
-const { Post } = require('../models');
+const sequelize = require ('../config/connection');
+const { User, Post, Comment } = require('../models');
 const withAuth = require('../utils/auth');
 
 //Find all posts
@@ -11,9 +12,9 @@ router.get('/', withAuth, async (req, res) => {
             },
         });
 
-        const posts = postData.map((blog) => post.get({ plain: true }));
+        const posts = postData.map((post) => post.get({ plain: true }));
 
-        res.render('dashboard', {
+        res.render('homepeage', {
             posts,
             logged_in: req.session.logged_in
         });
@@ -50,8 +51,8 @@ router.get('/edit/:id', withAuth, async (req, res) => {
             const post = updatedPost.get({ plain: true });
 
             res.render('editpost', {
+                layout: "dashboard",
                 post,
-                logged_in: req.session.logged_in
             });
         } else {
             res.status(404).end();
