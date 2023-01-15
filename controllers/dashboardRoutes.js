@@ -1,6 +1,6 @@
 const router = require('express').Router();
 const sequelize = require ('../config/connection');
-const { User, Post, Comment } = require('../models');
+const { Post } = require('../models/Post');
 const withAuth = require('../utils/auth');
 
 //Find all posts
@@ -15,31 +15,38 @@ router.get('/', withAuth, async (req, res) => {
         const posts = postData.map((post) => post.get({ plain: true }));
 
         res.render('homepeage', {
+            layout: 'dashboard',
             posts,
-            logged_in: req.session.logged_in
         });
     } catch (err) {
         res.status(500).json(err)
     }
 });
 
-router.get('/create', withAuth, async (req, res) => {
-    try {
-        const createPost = await Post.findAll({
-            where: {
-                user_id: req.session.user_id
-            },
-        });
+// router.get('/create', withAuth, async (req, res) => {
+//     try {
+//         const createPost = await Post.findAll({
+//             where: {
+//                 user_id: req.session.user_id
+//             },
+//         });
 
-        const newPost = createPost.map(post => post.get({ plain: true }));
+//         const newPost = createPost.map(post => post.get({ plain: true }));
 
-        res.render('create-post', {
-            newPost,
-            logged_in: req.session.logged_in
-        })
-    } catch (err) {
-        res.status(500).json(err)
-    }
+//         res.render('create-post', {
+//             newPost,
+//             logged_in: req.session.logged_in
+//         })
+//     } catch (err) {
+//         res.status(500).json(err)
+//     }
+// });
+
+router.get('/post', withAuth, (req, res) => {
+    res.render('blog', {
+        layout: 'dashboard',
+        logged_in: req.session.logged_in,
+    });
 });
 
 //Edit single post

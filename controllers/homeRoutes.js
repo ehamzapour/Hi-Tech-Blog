@@ -1,4 +1,4 @@
-const router = ('express').Router();
+const router = require('express').Router();
 const { User, Comment, Post } = require('../models');
 const withAuth = require('../utils/auth');
 
@@ -55,6 +55,21 @@ router.get('/login', (req, res) => {
     }
 
     res.render('login');
+});
+
+router.get('edit/:id', async (req, res) => {
+    try {
+        const singlePost = await Post.findByPk(req.params.id);
+
+        const post = singlePost.get({ plain: true });
+
+        res.render('editpost', {
+            post: post,
+            logged_in: req.session.logged_in,
+        });
+    } catch (err) {
+        res.status(500).json(err);
+    }
 });
 
 module.exports = router;
