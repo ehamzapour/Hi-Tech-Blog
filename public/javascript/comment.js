@@ -1,20 +1,25 @@
 const addComment = async function (event) {
     event.preventDefault();
 
-    const postId = document.querySelector('input[name="post-id"]').value;
-    const commentBody = document.querySelector('textarea[name="comment-body"]').value;
+    const postId = window.location.toString().split('/')[window.location.toString().split('/').length - 1];
+    const commentBody = document.querySelector('textarea[name="comment-body"]').value.trim();
+
 
     if (commentBody) {
-        await fetch('/api/comments', {
+        const response = await fetch('/api/comments', {
             method: 'POST',
             body: JSON.stringify({ postId, commentBody }),
             headers: { 'Content-Type': 'application/json'}
         });
 
-        document.location.reload();
+        if (response.ok) {
+            document.location.reload();
+        } else {
+            alert(response.statusText)
+        }
     }
 };
 
 document
-.querySelector('#add-comment-form')
+.querySelector('.add-comment-form')
 .addEventListener('submit', addComment);

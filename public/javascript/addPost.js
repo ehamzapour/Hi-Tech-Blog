@@ -2,11 +2,11 @@ const addPost = async function (event) {
     event.preventDefault();
 
     const title = document.querySelector('input[name="post-title"]').value.trim();
-    const content = document.querySelector('textarea[name="post-content"]').value.trim();
+    const postBody = document.querySelector('textarea[name="post-body"]').value.trim();
 
     const response = await fetch('/api/posts', {
         method: 'POST',
-        body: JSON.stringify({ title, body, }),
+        body: JSON.stringify({ title, postBody, }),
         headers: { 'Content-Type': 'application/json' },
     });
 
@@ -18,5 +18,5 @@ const addPost = async function (event) {
 };
 
 document
-.querySelector('#new-post-form')
+.querySelector('.new-post-form')
 .addEventListener('submit', addPost);
