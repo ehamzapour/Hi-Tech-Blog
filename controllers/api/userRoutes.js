@@ -102,7 +102,7 @@ router.get('/:id', async (req, res) => {
                     }
                 }
             ]
-        })
+        });
 
         if(!userData) {
             res.status(404).json({message: 'No user found!'});
