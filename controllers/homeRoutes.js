@@ -1,10 +1,31 @@
 const router = require('express').Router();
-const { User, Comment, Post } = require('../models');
-const withAuth = require('../utils/auth');
+const { User, Post, Comment } = require('../models');
+const sequelize = require('../config/connection');
 
 router.get('/', async (req, res) => {
     try {
+        const postData = await Post. findAll({
+            attributes: ['id', 'title', 'postBody', 'dateCreated'],
+            include: [
+                {
+                    model: Comment,
+                    attributes: ['id', 'commentBody', 'post_id', 'user_id', 'dateCreated'],
+                    include: {
+                        model: User,
+                        attributes: ['name']
+                    }
+                },
+                {
+                    model: User,
+                    attributes: ['name']
+                }
+            ]
+        }); 
+
+        const posts = postData.map(post => post.get({ plain: true }));
+
         res.render('homepage', {
+            posts,
             logged_in: req.session.logged_in,
         });
     } catch (err) {
@@ -15,32 +36,46 @@ router.get('/', async (req, res) => {
 //Single post
 router.get('/post/:id', async (req, res) => {
     try {
-        const singlePost = await Post.findByPk(req.params.id, {
+        const singlePost = await Post.findByOne({
+            where: {
+                id: req.params.id
+            },
+            attributes: ['id', 'title', 'postBody', 'dateCreated'],
             include: [
-                User,
                 {
                     model: Comment,
-                    include: [User],
+                    attributes: ['id', 'commentBody', 'post_id', 'user_id', 'dateCreated'],
+                    include: {
+                        model: User,
+                        attributes: ['name']
+                    }
                 },
-            ],
+                {
+                    model: User,
+                    attributes: ['name']
+                }
+            ]
         });
 
-        if (singlePost) {
-            const post = singlePost({ plain: true });
-            res.render('single-post', { post });
-
-        } else {
-            res.status(500).json(err);
+        if (!singlePost) {
+            res.status(404).json({ message: 'No post found with this id!'});
+            return;
         }
+            const post = singlePost({ plain: true });
+
+            res.render('single-post', {
+                post,
+                logged_in: req.session.logged_in
+            })
     } catch (err) {
         res.status(500).json(err);
     }
 });
 
 //Signup page
-router.get('/signup', (req, res) => {
+router.get('/signup', async (req, res) => {
     if (req.session.logged_in) {
-        res.redirect('/dashboard');
+        res.redirect('/');
         return;
     }
 
@@ -48,9 +83,9 @@ router.get('/signup', (req, res) => {
 });
 
 //Login Page
-router.get('/login', (req, res) => {
+router.get('/login', async (req, res) => {
     if (req.session.logged_in) {
-        res.redirect('/dashboard');
+        res.redirect('/');
         return;
     }
 
