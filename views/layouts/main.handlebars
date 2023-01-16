@@ -14,7 +14,38 @@
     </style>
 </head>
 
-<body class="flex-column min-100-vh">
+
+<body>
+  <div class="wrapper">
+      <header class="hero">
+          <div>
+            <nav class"nav">
+                    <a class="link" href="/">Home</a>
+                    <a class="link" href="/dashboard">Dashboard</a>
+                    {{#if loggedIn}}
+                    <a class="link" href="/" id="logout">Logout</a>
+                    {{else}}
+                    <a class="link" href="/login">Login</a>
+                    {{/if}}
+                </nav>          
+          </div>
+
+          <h1 class="app-title"><i class="fab "></i>Hi-Tech Blog</h1>
+      </header>
+
+    <main>
+      {{{ body }}}
+    </main>
+  </div>
+
+    {{#if loggedIn}}
+    <script src="/public/javascript/logout.js"></script>
+    {{/if}}
+
+</body>
+</html>
+
+{{!-- <body class="flex-column min-100-vh">
     <nav class="navbar">
         <ul>
             <li class="li-inline nav-item"><a href="/login">Login or Sign Up</a></li>
@@ -31,4 +62,4 @@
 {{#if logged_in}}
 <script src='/public/javascript/logout.js'></script>
 {{/if}}
-</html>
+</html> --}}

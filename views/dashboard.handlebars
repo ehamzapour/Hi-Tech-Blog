@@ -1,39 +1,13 @@
-<!DOCTYPE html>
-<html lang="en">
+{{#if posts.length}}
+<section>
+  <h2>Your Posts</h2>
+    {{#each posts as |post|}}
+      {{> post-info post}}
+    {{/each}}
 
-<head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Hi-Tech Blog</title>
-  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Trirong">
-    <style>
-        body {
-            font-family: "Trirong", serif;
-        }
-    </style>
-  <link rel="stylesheet" href="/public/css/style.css">
-</head>
+</section>
+{{/if}}
 
-<body class="flex-column min-100-vh">
-  <nav class="navbar">
-    <ul class="flex-row" id="header">
-      <li class="li-inline nav-item"><a href="/">Home</a></li>
-      <li class="li-inline nav-item"><a href="/post">New Post</a></li>
-      <li class="li-inline nav-item"><a href="#" id="logout-link">Logout</a></li>
-    </ul>
-  </nav>
-  <header class="hero">
-    <h1 class="app-title"><a href="/dashboard">Dashboard</a></h1>
-  </header>
+<button type="submit" class="btn"><a class="link" href="/dashboard/addpost">+ New Post</a></button>
 
-  <main class="col-auto">
-    {{{body}}}
-  </main>
-
-  <footer class="footer flex-row justify-center">
-  </footer>
-</body>
-
-<script src="/public/javascript/logout.js"></script>
-
-</html>
+<script src="/public/javascript/addPost.js"></script>
