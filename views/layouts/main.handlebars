@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hi-Tech Blog</title>
+    <link rel="stylesheet" href="/public/css/style.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Trirong">
+    <style>
+        body {
+            font-family: "Trirong", serif;
+        }
+    </style>
+</head>
+
+<body class="flex-column min-100-vh">
+    <nav class="navbar">
+        <ul>
+            <li class="li-inline nav-item"><a href="/login">Login or Sign Up</a></li>
+        </ul>
+    </nav>
+    <header class="hero">
+        <h1 class="app-title"><a href="/">Hi-Tech Blog</a></h1>
+    </header>
+
+    <main class="col-auto">
+        {{{body}}}
+    </main>
+</body>
+{{#if logged_in}}
+<script src='/public/javascript/logout.js'></script>
+{{/if}}
+</html>

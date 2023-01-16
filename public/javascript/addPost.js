@@ -6,7 +6,7 @@ const addPost = async function (event) {
 
     const response = await fetch('/api/posts', {
         method: 'POST',
-        body: JSON.stringify({ title, content, }),
+        body: JSON.stringify({ title, body, }),
         headers: { 'Content-Type': 'application/json' },
     });
 
