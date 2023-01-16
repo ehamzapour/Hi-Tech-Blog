@@ -1,4 +1,6 @@
-[
+const { User } = require('../models');
+
+const userData = [
     {
         "name": "Sally",
         "email": "sally@gmail.com",
@@ -14,4 +16,6 @@
         "email": "billy@gmail.com",
         "password": "password123"
     }
-]
+];
+
+module.exports = userData;
