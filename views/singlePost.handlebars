@@ -3,12 +3,12 @@
 {{#if logged_in}}
 <form class="add-comment">
     <textarea class="comment-body" name="comment-body"></textarea>
-    <button class="btn comment-btn" type="submit">Add New Comment</button>
+    <button class="btn comment-btn" type="submit">Add Comment</button>
 </form>
 {{/if}}
 
 {{> comments post.comments}}
 
 {{#if logged_in}}
-<script src="/public/javascript/comment.js"></script>
+<script src="../public/javascript/comment.js"></script>
 {{/if}} 

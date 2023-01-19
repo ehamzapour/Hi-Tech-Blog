@@ -1,7 +1,12 @@
 <div class="card">
     <div class="card-header">
-       <h4><a class="link" href="/post/{{id}}">{{title}}</a></h4>
-        <p>Posted by {{user.name}} on {{format_date dateCreated}}</p>
+        <a href="/post/{{id}}" class="card-title">{{title}}</a>
     </div>
-        <p class="card-body">{{postBody}}</p>
+
+    <div class="card-body">
+        <p class="card-body">{{post_body}}</p>
+        <p class="card-text">Posted by: <span class="post-username">{{user.username}}</span>,
+            <a href="/post/{{id}}">{{comments.length}}Comment</a>
+        </p>
+    </div>
 </div>

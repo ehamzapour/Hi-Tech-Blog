@@ -15,7 +15,7 @@
 
         <div class="edit-details">
             Created on {{format_date post.date_created}}
-
+            |
             <a href="/post/{{post.id}}">{{post.comments.length}}</a>
         </div>
 
@@ -28,5 +28,5 @@
     {{> comments post.comments}}
 </div>
 
-<script src="/public/javascript/editPost.js"></script>
-<script src="/public/javascript/deletePost.js"></script>
+<script src="../public/javascript/editPost.js"></script>
+<script src="../public/javascript/deletePost.js"></script>
