@@ -1,23 +1,23 @@
+const router = require('express').Router();
 const sequelize = require('../config/connection');
 const { User, Post, Comment } = require('../models');
-const router = require('express').Router();
 
 router.get('/', async (req, res) => {
     try {
         const postData = await Post. findAll({
-            attributes: ['id', 'title', 'postBody', 'dateCreated'],
+            attributes: ['id', 'title', 'post_body', 'date_created'],
             include: [
                 {
                     model: Comment,
-                    attributes: ['id', 'commentBody', 'post_id', 'user_id', 'dateCreated'],
+                    attributes: ['id', 'comment_body', 'post_id', 'user_id', 'date_created'],
                     include: {
                         model: User,
-                        attributes: ['name']
+                        attributes: ['username']
                     }
                 },
                 {
                     model: User,
-                    attributes: ['name']
+                    attributes: ['username']
                 }
             ]
         }); 
@@ -33,26 +33,46 @@ router.get('/', async (req, res) => {
     }
 });
 
+//Login Page
+router.get('/login', async (req, res) => {
+    if (req.session.logged_in) {
+        res.redirect('/');
+        return;
+    }
+
+    res.render('login');
+});
+
+//Signup page
+router.get('/signup', async (req, res) => {
+    if (req.session.logged_in) {
+        res.redirect('/');
+        return;
+    }
+
+    res.render('signup');
+});
+
 //Single post
 router.get('/post/:id', async (req, res) => {
     try {
-        const singlePost = await Post.findByOne({
+        const singlePost = await Post.findOne({
             where: {
                 id: req.params.id
             },
-            attributes: ['id', 'title', 'postBody', 'dateCreated'],
+            attributes: ['id', 'title', 'post_body', 'date_created'],
             include: [
                 {
                     model: Comment,
-                    attributes: ['id', 'commentBody', 'post_id', 'user_id', 'dateCreated'],
+                    attributes: ['id', 'comment_body', 'post_id', 'user_id', 'date_created'],
                     include: {
                         model: User,
-                        attributes: ['name']
+                        attributes: ['username']
                     }
                 },
                 {
                     model: User,
-                    attributes: ['name']
+                    attributes: ['username']
                 }
             ]
         });
@@ -72,39 +92,19 @@ router.get('/post/:id', async (req, res) => {
     }
 });
 
-//Signup page
-router.get('/signup', async (req, res) => {
-    if (req.session.logged_in) {
-        res.redirect('/');
-        return;
-    }
+// router.get('edit/:id', async (req, res) => {
+//     try {
+//         const singlePost = await Post.findByPk(req.params.id);
 
-    res.render('signup');
-});
+//         const post = singlePost.get({ plain: true });
 
-//Login Page
-router.get('/login', async (req, res) => {
-    if (req.session.logged_in) {
-        res.redirect('/');
-        return;
-    }
-
-    res.render('login');
-});
-
-router.get('edit/:id', async (req, res) => {
-    try {
-        const singlePost = await Post.findByPk(req.params.id);
-
-        const post = singlePost.get({ plain: true });
-
-        res.render('editpost', {
-            post: post,
-            logged_in: req.session.logged_in,
-        });
-    } catch (err) {
-        res.status(500).json(err);
-    }
-});
+//         res.render('editpost', {
+//             post: post,
+//             logged_in: req.session.logged_in,
+//         });
+//     } catch (err) {
+//         res.status(500).json(err);
+//     }
+// });
 
 module.exports = router;

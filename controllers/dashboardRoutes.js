@@ -1,34 +1,34 @@
-const router = require("express").Router();
-const sequelize = require("../config/connection");
-const { User, Post, Comment } = require("../models");
-const withAuth = require("../utils/auth");
+const router = require('express').Router();
+const sequelize = require('../config/connection');
+const { User, Post, Comment } = require('../models');
+const withAuth = require('../utils/auth');
 
 //Find all posts
-router.get("/", withAuth, async (req, res) => {
+router.get('/', withAuth, async (req, res) => {
   try {
     const postData = await Post.findAll({
       where: {
         user_id: req.session.user_id,
       },
-      attributes: ["id", "title", "postBody", "dateCreated"],
+      attributes: ['id', 'title', 'post_body', 'date_created'],
       include: [
         {
           model: Comment,
           attributes: [
-            "id",
-            "commentBody",
-            "post_id",
-            "user_id",
-            "dateCreated",
+            'id',
+            'comment_body',
+            'post_id',
+            'user_id',
+            'date_created',
           ],
           include: {
             model: User,
-            attributes: ["name"]
+            attributes: ['username']
           }
         },
         {
           model: User,
-          attributes: ["name"]
+          attributes: ['username']
         }
       ]
     });
@@ -46,37 +46,37 @@ router.get("/", withAuth, async (req, res) => {
 });
 
 //Edit single post
-router.get("/edit/:id", withAuth, async (req, res) => {
+router.get('/edit/:id', withAuth, async (req, res) => {
     try {
       const updatedPost = await Post.findOne({
         where: {
             id: req.params.id
         },
-        attributes: ['id', 'title', 'postBody', 'dateCreated'],
+        attributes: ['id', 'title', 'post_body', 'date_created'],
         include: [
             {
                 model: Comment,
-                attributes: ['id', 'commentBody', 'postBody', 'user_id', 'dateCreated'],
+                attributes: ['id', 'comment_body', 'post_body', 'user_id', 'date_created'],
                 include: {
                     model: User,
-                    attributes: ['name']
+                    attributes: ['username']
                 }
             },
             {
                 model: User,
-                attributes: ['name']
+                attributes: ['username']
             }
         ]
       });
   
       if (!updatedPost) {
-        res.status(404).json({ message: "No post found with this id!"});
+        res.status(404).json({ message: 'No post found with this id!'});
         return;
       }
 
         const post = updatedPost.get({ plain: true });
   
-        res.render("editpost", {
+        res.render('edit-post', {
           post,
           logged_in: req.session.logged_in
         })
@@ -92,19 +92,19 @@ router.get('/create', withAuth, async (req, res) => {
             where: {
                 user_id: req.session.user_id
             },
-            attributes: ['id', 'title', 'postBody', 'dateCreated'],
+            attributes: ['id', 'title', 'post_body', 'date_created'],
             include: [
                 {
                     model: Comment,
-                    attributes: ['id', 'commentBody', 'post_id', 'user_id', 'dateCreated'],
+                    attributes: ['id', 'comment_body', 'post_id', 'user_id', 'date_created'],
                     include: {
                         model: User,
-                        attributes: ['name']
+                        attributes: ['username']
                     }
                 },
                 {
                     model: User,
-                    attributes: ['name']
+                    attributes: ['username']
                 }
             ]
         });
@@ -120,9 +120,9 @@ router.get('/create', withAuth, async (req, res) => {
     }
 });
 
-// router.get("/post", withAuth, (req, res) => {
-//   res.render("blog", {
-//     layout: "dashboard",
+// router.get('/post', withAuth, (req, res) => {
+//   res.render('blog', {
+//     layout: 'dashboard',
 //     logged_in: req.session.logged_in,
 //   });
 // });

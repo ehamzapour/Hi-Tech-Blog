@@ -1,25 +1,25 @@
-const sequelize = require('../../config/connection');
 const router = require('express').Router();
-const { User, Post, Comment } = require('../../models');
+const { Post, User, Comment } = require('../../models');
+const sequelize = require('../../config/connection');
 const withAuth = require('../../utils/auth');
 
 router.get('/', async (req, res) => {
     try {
         const postData = await Post.findAll({
-            attributes: ['id', 'title', 'postBody', 'dateCreated'],
-            order: [['dateCreated', 'DESC']],
+            attributes: ['id', 'title', 'post_body', 'date_created'],
+            order: [['date_created', 'DESC']],
             include: [
                 {
                     model: User,
-                    attributes: ['name']
+                    attributes: ['username']
                 },
                 {
                     model: Comment,
-                    attributes: ['id', 'commentBody', 'post_id', 'user_id', 'dateCreated'],
+                    attributes: ['id', 'comment_body', 'post_id', 'user_id', 'date_created'],
                     include: [
                         {
                             model: User,
-                            attributes: ['name']
+                            attributes: ['username']
                         }
                     ]
                 }
@@ -38,20 +38,20 @@ router.get('/:id', async (req, res) => {
             where: {
                 id: req.params.id
             },
-            attributes: ['id', 'title', 'postBody', 'dateCreated'],
-            order: [['dateCreated', 'DESC']],
+            attributes: ['id', 'title', 'post_body', 'date_created'],
+            order: [['date_created', 'DESC']],
             include: [
                 {
                     model: User,
-                    attributes: ['name']
+                    attributes: ['username']
                 },
                 {
                     model: Comment,
-                    attributes: ['id', 'commentBody', 'post_id', 'user_id', 'dateCreated'],
+                    attributes: ['id', 'comment_body', 'post_id', 'user_id', 'date_created'],
                     include: [
                         {
                             model: User,
-                            attributes: ['name']
+                            attributes: ['username']
                         }
                     ]
                 }
@@ -74,8 +74,8 @@ router.post('/', withAuth, async (req, res) => {
     try {
         const postData = await Post.create({
             title: req.body.title,
-            user_id: req.session.user_id,
-            postBody: req.body.postBody
+            post_body: req.body.postBody,
+            user_id: req.session.user_id
         });
 
         res.status(200).json(postData);
@@ -90,7 +90,7 @@ router.put('/:id', withAuth, async (req, res) => {
         const postData = await Post.update(
             {
                 title: req.body.title,
-                postBody: req.body.postBody
+                post_body: req.body.postBody
             },
             {
                 where: {
