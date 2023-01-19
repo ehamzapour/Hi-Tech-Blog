@@ -1,4 +1,4 @@
-const loginFormHandler = async (event) => {
+const login = async (event) => {
     event.preventDefault();
 
     const email = document.querySelector('#email-login').value.trim();
@@ -21,4 +21,4 @@ const loginFormHandler = async (event) => {
 
 document
 .querySelector('.login-form')
-.addEventListener('submit', loginFormHandler);
+.addEventListener('submit', login);

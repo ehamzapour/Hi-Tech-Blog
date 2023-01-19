@@ -1,14 +1,14 @@
 const addComment = async function (event) {
     event.preventDefault();
 
-    const post_id = window.location.toString().split('/')[window.location.toString().split('/').length - 1];
     const commentBody = document.querySelector('textarea[name="comment-body"]').value.trim();
+    const postId = window.location.toString().split('/')[window.location.toString().split('/').length - 1];
 
 
     if (commentBody) {
         const response = await fetch('/api/comments', {
             method: 'POST',
-            body: JSON.stringify({ post_id, commentBody }),
+            body: JSON.stringify({ postId, commentBody }),
             headers: { 'Content-Type': 'application/json'}
         });
 
