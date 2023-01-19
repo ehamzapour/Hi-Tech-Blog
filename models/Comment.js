@@ -11,11 +11,11 @@ Comment.init(
             primaryKey: true,
             autoIncrement: true,
         },
-        commentBody: {
+        comment_body: {
             type: DataTypes.TEXT,
             allowNull: false,
         },
-        dateCreated: {
+        date_created: {
             type: DataTypes.DATE,
             allowNull: false,
             defaultValue: DataTypes.NOW,
